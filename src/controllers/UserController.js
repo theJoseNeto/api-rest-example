@@ -24,7 +24,6 @@ class UserController {
 
   async show(req, res){
     try {
-      const {id} = req.params;
       const user = User.findByPk(id);
       const {name, email, id} = user;
 
@@ -63,7 +62,7 @@ class UserController {
       if(!id) throw new Error('invalid id');
 
       const user = await User.findByPk(id);
-      
+
       if(!user) throw new Error('user cannot exists');
       await user.delete(req.body);
 
