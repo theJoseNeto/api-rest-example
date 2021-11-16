@@ -15,7 +15,7 @@ class UserController {
 
   async index(req, res){
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({attributes: ['id', 'nome', 'email']});
       return res.json({users});
     } catch (error) {
       return res.status(400).json(null)
@@ -26,10 +26,19 @@ class UserController {
     try {
       const {id} = req.params;
       const user = User.findByPk(id);
+      const {name, email, id} = user;
+
+      res.send({name, email, id});
+
+
+
+
     } catch (error) {
       res.status(400).json(null)
     }
   }
+
+
   async update(req, res){
     try {
       const {id} = req.params;
@@ -52,8 +61,9 @@ class UserController {
       const {id} = req.params;
 
       if(!id) throw new Error('invalid id');
-      const user = await User.findByPk(id);
 
+      const user = await User.findByPk(id);
+      
       if(!user) throw new Error('user cannot exists');
       await user.delete(req.body);
 
